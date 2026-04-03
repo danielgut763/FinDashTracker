@@ -193,7 +193,9 @@ function monthExpenses() { return state.expenses.filter(e => e.monthKey === mont
 function catColor(name) { const c = state.categories.find(c => c.name === name); return c ? c.color : '#888'; }
 
 async function apiFetch(path, opts = {}) {
-  const res = await fetch(`${API}${path}`, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  const defaultHeaders = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' };
+  const mergedHeaders = Object.assign({}, defaultHeaders, opts.headers || {});
+  const res = await fetch(`${API}${path}`, { ...opts, headers: mergedHeaders });
   return res.json().catch(() => ({}));
 }
 
